@@ -4,19 +4,21 @@ let scene;
 let renderer; 
 let camera;
 let cube;
-let height = 300;
-let width = 300
+let height = window.innerHeight;
+let width = window.innerWidth;
+let clock;
 
 
 function init(){
     scene = new THREE.Scene();
+    clock = new THREE.Clock();
     
     const canvasHtml = document.getElementById('mycanvas');
 
     renderer = new THREE.WebGLRenderer({antialias : true, canvas : canvasHtml, alpha : true});
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
-    renderer.setClearColor(0x16a085, 0)
+    renderer.setClearColor(0x16a085, 1)
    
 
     camera = new THREE.PerspectiveCamera(75, width / height, 1, 10000 );
@@ -43,8 +45,10 @@ function init(){
 
 function render(){
 
-    cube.rotation.y += 0.01
-    cube.rotation.x += 0.01
+    const delta = clock.getDelta();
+    
+    cube.rotation.y += 0.6 * delta
+    cube.rotation.x += 0.3 * delta
 
     renderer.render(scene, camera);
     requestAnimationFrame(render);

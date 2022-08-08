@@ -4,21 +4,26 @@ let scene;
 let renderer; 
 let camera;
 let cube;
-let cubered;
+let height = 300;
+let width = 300
 
 
 function init(){
     scene = new THREE.Scene();
+    
+    const canvasHtml = document.getElementById('mycanvas');
 
-    renderer = new THREE.WebGLRenderer({antialias : true});
+    renderer = new THREE.WebGLRenderer({antialias : true, canvas : canvasHtml, alpha : true});
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+    renderer.setSize(width, height);
+    renderer.setClearColor(0x16a085, 0)
+   
 
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000 );
+    camera = new THREE.PerspectiveCamera(75, width / height, 1, 10000 );
     camera.position.set(-500, 400, -500);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
     camera.add(camera);
+
 
     const ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
     scene.add(ambientLight);
@@ -30,7 +35,7 @@ function init(){
     const cubeMat = new THREE.MeshPhongMaterial({color : 0x34495e});
     cube = new THREE.Mesh(cubeGeo, cubeMat);
     
-        scene.add(cube);
+    scene.add(cube);
         
 
     render();

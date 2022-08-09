@@ -1,4 +1,5 @@
 import * as THREE from './node_modules/three/build/three.module.js'
+import { OrbitControls} from './OrbitControls.js'
 
 let scene;
 let renderer;
@@ -24,17 +25,26 @@ function init() {
 
 
     camera = new THREE.PerspectiveCamera(75, width / height, 1, 10000);
-    camera.position.set(-500, 500, -500);
+    camera.position.set(-500, 10, -500);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
     scene.add(camera);
 
 
     const ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
     scene.add(ambientLight);
+    
+            //Créer un arrière plan pour la scene
+            const loader = new THREE.TextureLoader();
+            const texture360 = loader.load('./assets/textures/pieceVide2.jpg');
+            //proprièter mapping 
+            texture360.mapping = THREE.EquirectangularReflectionMapping;
+            // définir le background de la scéne
+            scene.background = texture360;
 
     directionalLight = new THREE.DirectionalLight(0xcccccc, 0.8);
     scene.add(directionalLight);
-    const cubeMatPhong = new THREE.MeshPhongMaterial({color: 0x34495e});
+    // envMap transforme le cube en mirroir qui reflète l'environement
+    const cubeMatPhong = new THREE.MeshPhongMaterial({envMap: texture360});
         const cubeGeo = new THREE.BoxGeometry(300, 300, 300);
         cube = new THREE.Mesh(cubeGeo, cubeMatPhong);
         scene.add(cube);
@@ -54,3 +64,4 @@ function render() {
 }
 
 init();
+const controls = new OrbitControls(camera, renderer.domElement);

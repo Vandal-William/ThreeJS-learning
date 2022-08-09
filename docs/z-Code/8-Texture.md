@@ -1,4 +1,4 @@
-# TEXTURE
+# TEXTURE OBJETS
 
 ```js
 
@@ -54,4 +54,30 @@ loader.load("./assets/textures/Itachi.png", (loaded_texture) => {
 
   [---]
 });
+```
+
+# TEXTURE BACKGROUND SCENE
+
+```js
+
+[---]
+//Créer un arrière plan pour la scene
+const loader = new THREE.TextureLoader();
+// prend une image 360°
+const texture360 = loader.load("./assets/textures/pieceVide2.jpg");
+//proprièter mapping
+texture360.mapping = THREE.EquirectangularReflectionMapping;
+// définir le background de la scéne
+scene.background = texture360;
+
+directionalLight = new THREE.DirectionalLight(0xcccccc, 0.8);
+scene.add(directionalLight);
+// envMap transforme le cube en mirroir qui reflète l'environement
+const cubeMatPhong = new THREE.MeshPhongMaterial({ envMap: texture360 });
+const cubeGeo = new THREE.BoxGeometry(300, 300, 300);
+cube = new THREE.Mesh(cubeGeo, cubeMatPhong);
+scene.add(cube);
+
+[---]
+
 ```

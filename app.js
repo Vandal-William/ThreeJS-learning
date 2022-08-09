@@ -7,6 +7,7 @@ let cube;
 let height = window.innerHeight;
 let width = window.innerWidth;
 let clock;
+let directionalLight;
 
 
 function init(){
@@ -24,19 +25,21 @@ function init(){
     camera = new THREE.PerspectiveCamera(75, width / height, 1, 10000 );
     camera.position.set(-500, 500, -500);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
-    camera.add(camera);
+    scene.add(camera);
 
 
     const ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight = new THREE.DirectionalLight(0xcccccc, 0.8);
     scene.add(directionalLight);
-    //cube
-    const cubeGeo = new THREE.BoxGeometry(300, 300, 300);
-    const cubeMat = new THREE.MeshPhongMaterial({color : 0x34495e});
 
-    cube = new THREE.Mesh(cubeGeo, cubeMat);
+    const cubeGeo = new THREE.BoxGeometry(300, 300, 300);
+    const cubeMatPhong = new THREE.MeshPhongMaterial({
+        color : 0x34495e
+    });
+
+    cube = new THREE.Mesh(cubeGeo, cubeMatPhong);
     scene.add(cube);
 
     render();
@@ -45,7 +48,7 @@ function init(){
 function render(){
 
     const delta = clock.getDelta();
-    
+
     cube.rotation.y += 0.6 * delta 
     cube.rotation.x += 0.3 * delta
 

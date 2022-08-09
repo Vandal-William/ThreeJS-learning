@@ -2,7 +2,7 @@
 
 Pour avoir une camere qui donne une vue du dessus plutot que sur le coté avec perspectivecamera.
 
-![OrthographicCamera](./images/OrthographicCamera.png)
+![OrthographicCamera](../images/OrthographicCamera.png)
 
 ```js
 const aspect = window.innerWidth / window.innerHeight;

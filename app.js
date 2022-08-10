@@ -25,30 +25,52 @@ function init() {
 
 
     camera = new THREE.PerspectiveCamera(75, width / height, 1, 10000);
-    camera.position.set(-500, 10, -500);
+    camera.position.set(-10, 5, -1);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
     scene.add(camera);
 
 
     const ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
     scene.add(ambientLight);
-    
-            //Créer un arrière plan pour la scene
-            const loader = new THREE.TextureLoader();
-            const texture360 = loader.load('./assets/textures/pieceVide2.jpg');
-            //proprièter mapping 
-            texture360.mapping = THREE.EquirectangularReflectionMapping;
-            // définir le background de la scéne
-            scene.background = texture360;
+
+    // creation d'un plane avec sa texture    
+    const loader = new THREE.TextureLoader();
+    const planeSize = 2;
+    const texture = loader.load('./assets/textures/Grass_Sample.png');
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.magFilter = THREE.NearestFilter;
+    const repeats = 2;
+    texture.repeat.set(repeats, repeats);
+
+    const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
+    const planeMat = new THREE.MeshPhongMaterial({map: texture, side: THREE.DoubleSide});
+
+    //j'ajoute le plane a la scene
+    const mesh = new THREE.Mesh(planeGeo, planeMat);
+    mesh.rotation.x = Math.PI * -0.5;
+    scene.add(mesh)
+
+    // j'ajoute la texture du sprite
+    const narutoTexture = loader.load('./assets/textures/spriteNaruto.webp');
+    const narutoMaterial = new THREE.SpriteMaterial({
+        map: narutoTexture
+    });
+
+    // j'ajoute le sprite a la scène 
+    const narutoSprite = new THREE.Sprite(narutoMaterial)
+    narutoSprite.position.set(0, 0.5, 0);
+    scene.add(narutoSprite)
 
     directionalLight = new THREE.DirectionalLight(0xcccccc, 0.8);
     scene.add(directionalLight);
-    // envMap transforme le cube en mirroir qui reflète l'environement
-    const cubeMatPhong = new THREE.MeshPhongMaterial({envMap: texture360});
-        const cubeGeo = new THREE.BoxGeometry(300, 300, 300);
-        cube = new THREE.Mesh(cubeGeo, cubeMatPhong);
-        scene.add(cube);
+    
+    //const cubeMatPhong = new THREE.MeshPhongMaterial({color : 0xcccccc});
+        //const cubeGeo = new THREE.BoxGeometry(300, 300, 300);
+        //cube = new THREE.Mesh(cubeGeo, cubeMatPhong);
+        //scene.add(cube);
 
+    
     render();
 };
 
@@ -56,8 +78,8 @@ function render() {
 
     const delta = clock.getDelta();
 
-    cube.rotation.y += 0.6 * delta 
-    cube.rotation.x += 0.3 * delta
+    //cube.rotation.y += 0.6 * delta 
+    //cube.rotation.x += 0.3 * delta
 
     renderer.render(scene, camera);
     requestAnimationFrame(render);
